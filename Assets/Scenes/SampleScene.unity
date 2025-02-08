@@ -129,8 +129,9 @@ GameObject:
   m_Component:
   - component: {fileID: 150780854}
   - component: {fileID: 150780855}
+  - component: {fileID: 150780856}
   m_Layer: 0
-  m_Name: PlayerSpritesheet_0
+  m_Name: PlayerOverworld
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -148,7 +149,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 449378877}
   m_Father: {fileID: 1813244359}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &150780855
@@ -206,6 +208,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &150780856
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 150780853}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 11b836df40725e945b5687a8e87b9ba8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -509,7 +533,7 @@ GameObject:
   - component: {fileID: 449378880}
   - component: {fileID: 449378879}
   m_Layer: 0
-  m_Name: Capsule
+  m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -523,12 +547,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 449378876}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1813244359}
+  m_Father: {fileID: 150780854}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &449378879
 MeshRenderer:
@@ -758,6 +782,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a03164a481ab1e243b723b44d674de7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 150780856}
+  spriteRenderer: {fileID: 150780855}
   speed: 3
 --- !u!4 &1813244359
 Transform:
@@ -772,7 +798,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 449378877}
   - {fileID: 150780854}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
