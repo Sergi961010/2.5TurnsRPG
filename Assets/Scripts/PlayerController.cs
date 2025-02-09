@@ -3,12 +3,18 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     const string IS_WALKING = "IsWalking";
+    const float timePerStep = 0.5f;
+
     [SerializeField] Animator animator;
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] float speed;
+    [SerializeField] LayerMask grassLayer;
+    [SerializeField] int stepsInGrass;
+
     PlayerControls playerControls;
     Rigidbody rb;
     Vector3 movement;
+    float stepTimer;
 
     void Awake()
     {
@@ -41,5 +47,18 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         rb.MovePosition(transform.position + speed * Time.fixedDeltaTime * movement);
+
+        Collider[] colliders = Physics.OverlapSphere(transform.position, 1, grassLayer);
+        bool movingInGras = colliders.Length != 0 && movement != Vector3.zero;
+
+        if (movingInGras)
+        {
+            stepTimer += Time.fixedDeltaTime;
+            if (stepTimer >= timePerStep)
+            {
+                stepsInGrass++;
+                stepTimer = 0f;
+            }
+        }
     }
 }
