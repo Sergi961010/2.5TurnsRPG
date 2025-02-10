@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PartyManager : MonoBehaviour
 {
-    [SerializeField] PartyMemberInfo[] partyMembers;
+    [SerializeField] PartyMemberInfo[] partyMembersData;
     [SerializeField] List<PartyMember> currentParty;
     [SerializeField] PartyMemberInfo defaultPartyMember;
 
@@ -15,22 +15,22 @@ public class PartyManager : MonoBehaviour
 
     public void AddMemberToPartyByName(string name)
     {
-        foreach (var member in partyMembers)
+        foreach (var data in partyMembersData)
         {
-            if (member.Name == name)
+            if (data.Name == name)
             {
                 PartyMember newMember = new()
                 {
-                    Name = member.Name,
-                    Level = member.StartingLevel,
-                    CurrentHealth = member.BaseHealth,
-                    MaxHealth = member.BaseHealth,
-                    Strength = member.BaseStrength,
-                    Speed = member.BaseSpeed,
+                    Name = data.Name,
+                    Level = data.StartingLevel,
+                    CurrentHealth = data.BaseHealth,
+                    MaxHealth = data.BaseHealth,
+                    Strength = data.BaseStrength,
+                    Speed = data.BaseSpeed,
                     CurrentExperience = 0,
                     MaxExperience = 0,
-                    BattleVisualPrefab = member.BattleVisualPrefab,
-                    OverworldVisualPrefab = member.OverworldVisualPrefab
+                    BattleVisualPrefab = data.BattleVisualPrefab,
+                    OverworldVisualPrefab = data.OverworldVisualPrefab
                 };
                 currentParty.Add(newMember);
             }
