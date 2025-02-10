@@ -56,5 +56,8 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "2.5TurnsRPG.sln"
+    "dotnet.defaultSolution": "2.5TurnsRPG.sln",
+    "cSpell.words": [
+        "Overworld"
+    ]
 }
