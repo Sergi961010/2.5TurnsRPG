@@ -23,11 +23,6 @@ public class BattleVisuals : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    void Start()
-    {
-        SetStartingValues(10, 10, 5);
-    }
-
     public void SetStartingValues(int currentHealth, int maxHealth, int level)
     {
         this.currentHealth = currentHealth;

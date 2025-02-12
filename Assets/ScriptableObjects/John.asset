@@ -17,5 +17,5 @@ MonoBehaviour:
   BaseHealth: 10
   BaseStrength: 5
   BaseSpeed: 5
-  BattleVisualPrefab: {fileID: 0}
+  BattleVisualPrefab: {fileID: 8431248982235321927, guid: aaaa9529eb12a14449b25f7397def8cc, type: 3}
   OverworldVisualPrefab: {fileID: 0}

@@ -37,16 +37,18 @@ public class EnemyManager : MonoBehaviour
             }
         }
     }
+
+    public List<Enemy> GetCurrentEnemies() => currentEnemies;
 }
 
 [Serializable]
-public class Enemy
+public class Enemy : IBattler
 {
     public string Name;
-    public int Level;
-    public int CurrentHealth;
-    public int MaxHealth;
+    public int Level { get; set; }
+    public int CurrentHealth { get; set; }
+    public int MaxHealth { get; set; }
+    public GameObject BattleVisualPrefab { get; set; }
     public int Strength;
     public int Speed;
-    public GameObject BattleVisualPrefab;
 }

@@ -16,4 +16,4 @@ MonoBehaviour:
   BaseHealth: 1
   BaseStrength: 1
   BaseSpeed: 1
-  BattleVisualPrefab: {fileID: 0}
+  BattleVisualPrefab: {fileID: 8787438607756565130, guid: c31fd9a66c52b054a9e5d40036dbfc2d, type: 3}

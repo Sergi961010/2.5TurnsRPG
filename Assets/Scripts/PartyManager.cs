@@ -36,19 +36,24 @@ public class PartyManager : MonoBehaviour
             }
         }
     }
+
+    public List<PartyMember> GetCurrentPartyMembers()
+    {
+        return currentParty;
+    }
 }
 
 [Serializable]
-public class PartyMember
+public class PartyMember : IBattler
 {
     public string Name;
-    public int Level;
-    public int CurrentHealth;
-    public int MaxHealth;
+    public int Level { get; set; }
+    public int CurrentHealth { get; set; }
+    public int MaxHealth { get; set; }
     public int Strength;
     public int Speed;
     public int CurrentExperience;
     public int MaxExperience;
-    public GameObject BattleVisualPrefab;
+    public GameObject BattleVisualPrefab { get; set; }
     public GameObject OverworldVisualPrefab;
 }
