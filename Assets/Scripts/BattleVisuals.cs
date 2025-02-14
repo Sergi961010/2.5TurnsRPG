@@ -20,7 +20,7 @@ public class BattleVisuals : MonoBehaviour
 
     void Awake()
     {
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     public void SetStartingValues(int currentHealth, int maxHealth, int level)

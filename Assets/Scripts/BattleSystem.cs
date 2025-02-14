@@ -1,9 +1,27 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class BattleSystem : MonoBehaviour
 {
+    private const string ACTION_MESSAGE = "'s action:";
+
+    [SerializeField]
+    enum BattleState
+    {
+        Start,
+        Selection,
+        Battle,
+        Won,
+        Lost,
+        Run
+    }
+
+    [Header("Battle State")]
+    [SerializeField] BattleState currentState;
+
     [Header("Spawn Points")]
     [SerializeField] Transform[] partySpawnPoints;
     [SerializeField] Transform[] enemySpawnPoints;
@@ -13,8 +31,19 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] List<BattleEntity> enemyBattlers = new();
     [SerializeField] List<BattleEntity> playerBattlers = new();
 
+    [Header("UI")]
+    [SerializeField] GameObject[] enemySelectionButtons;
+    [SerializeField] GameObject battleMenu;
+    [SerializeField] GameObject enemySelectionMenu;
+    [SerializeField] TextMeshProUGUI actionText;
+    [SerializeField] GameObject bottomPopupText;
+    [SerializeField] TextMeshProUGUI bottomText;
+
     PartyManager partyManager;
     EnemyManager enemyManager;
+    int currentPlayer;
+    int currentEnemy;
+
     void Start()
     {
         partyManager = FindFirstObjectByType<PartyManager>();
@@ -22,6 +51,38 @@ public class BattleSystem : MonoBehaviour
 
         CreatePartyEntities();
         CreateEnemyEntities();
+        ShowBattleMenu();
+    }
+
+    IEnumerator BattleRoutine()
+    {
+        enemySelectionMenu.SetActive(false);
+        currentState = BattleState.Battle;
+        bottomPopupText.SetActive(true);
+
+        for (int i = 0; i < playerBattlers.Count; i++)
+        {
+            switch (allBattlers[i].State)
+            {
+                case BattleEntity.BattleState.Attacking:
+                    yield return StartCoroutine(AttackRoutine(i));
+                    break;
+                case BattleEntity.BattleState.Running:
+                    break;
+                default:
+                    Debug.LogError("Invalid Battle State");
+                    break;
+            }
+        }
+
+        if (currentState == BattleState.Battle)
+        {
+            bottomPopupText.SetActive(false);
+            currentPlayer = 0;
+            ShowBattleMenu();
+        }
+
+        yield return null;
     }
 
     void CreatePartyEntities()
@@ -77,11 +138,97 @@ public class BattleSystem : MonoBehaviour
             enemyBattlers.Add(newEntity);
         }
     }
+
+    public void ShowBattleMenu()
+    {
+        battleMenu.SetActive(true);
+        enemySelectionMenu.SetActive(false);
+        actionText.text = playerBattlers[currentPlayer].Name + ACTION_MESSAGE;
+    }
+
+    public void ShowEnemySelectionMenu()
+    {
+        battleMenu.SetActive(false);
+        SetEnemySelectionButtons();
+        enemySelectionMenu.SetActive(true);
+    }
+
+    public void SelectEnemy(int target)
+    {
+        BattleEntity player = playerBattlers[currentPlayer];
+        player.Target = allBattlers.IndexOf(enemyBattlers[target]);
+        player.State = BattleEntity.BattleState.Attacking;
+        currentPlayer++;
+
+        if (currentPlayer >= playerBattlers.Count)
+        {
+            StartCoroutine(BattleRoutine());
+        }
+        else
+        {
+            ShowBattleMenu();
+        }
+    }
+
+    void SetEnemySelectionButtons()
+    {
+        foreach (GameObject button in enemySelectionButtons)
+        {
+            button.SetActive(false);
+        }
+
+        for (int i = 0; i < enemyBattlers.Count; i++)
+        {
+            enemySelectionButtons[i].SetActive(true);
+            enemySelectionButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = enemyBattlers[i].Name;
+        }
+    }
+
+    void AttackAction(BattleEntity player, BattleEntity target)
+    {
+        player.BattleVisual.PlayAttackAnimation();
+        target.CurrentHealth -= player.Strength;
+        target.BattleVisual.PlayHitAnimation();
+        target.UpdateUI();
+        bottomText.text = string.Format("{0} dealt {1} damage to {2}.", player.Name, player.Strength, target.Name);
+    }
+
+    IEnumerator AttackRoutine(int i)
+    {
+        if (allBattlers[i].IsPlayer)
+        {
+            BattleEntity player = allBattlers[i];
+            BattleEntity target = allBattlers[player.Target];
+
+            AttackAction(allBattlers[i], allBattlers[allBattlers[i].Target]);
+            yield return new WaitForSeconds(0.5f);
+
+            if (target.CurrentHealth <= 0)
+            {
+                allBattlers.Remove(target);
+                enemyBattlers.Remove(target);
+
+                if (enemyBattlers.Count <= 0)
+                {
+                    currentState = BattleState.Won;
+                    bottomText.text = "You won the battle!";
+                }
+            }
+
+        }
+    }
 }
 
 [Serializable]
 public class BattleEntity
 {
+    public enum BattleState
+    {
+        Attacking,
+        Running,
+    }
+    public BattleState State;
+
     public string Name;
     public int CurrentHealth;
     public int MaxHealth;
@@ -90,4 +237,10 @@ public class BattleEntity
     public int Level;
     public bool IsPlayer;
     public BattleVisuals BattleVisual;
+    public int Target;
+
+    public void UpdateUI()
+    {
+        BattleVisual.UpdateHealthBar(CurrentHealth);
+    }
 }
