@@ -7,7 +7,7 @@ public class PartyManager : MonoBehaviour
     [SerializeField] PartyMemberInfo[] partyMembersData;
     [SerializeField] List<PartyMember> currentParty;
     [SerializeField] PartyMemberInfo defaultPartyMember;
-    Vector3 playerPosition;
+    Vector3 playerPosition = Vector3.up;
     static PartyManager instance;
 
     void Awake()
@@ -59,12 +59,12 @@ public class PartyManager : MonoBehaviour
         currentParty[index].CurrentHealth = health;
     }
 
-    public void SetPosition(int index, Vector3 position)
+    public void SetPosition(Vector3 position)
     {
         playerPosition = position;
     }
 
-    public Vector3 GetPosition(int index)
+    public Vector3 GetPosition()
     {
         return playerPosition;
     }

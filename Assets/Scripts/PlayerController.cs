@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] int minStepsToEncounter;
     [SerializeField] int maxStepsToEncounter;
 
+    PartyManager partyManager;
 
     PlayerControls playerControls;
     Rigidbody rb;
@@ -31,6 +32,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        partyManager = FindFirstObjectByType<PartyManager>();
+        transform.position = partyManager.GetPosition();
     }
 
     void OnEnable()
@@ -69,6 +72,7 @@ public class PlayerController : MonoBehaviour
 
             if (stepsInGrass >= stepsToEncounter)
             {
+                partyManager.SetPosition(transform.position);
                 SceneManager.LoadScene(BATTLE_SCENE);
             }
         }

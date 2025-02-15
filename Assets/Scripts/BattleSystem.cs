@@ -55,6 +55,7 @@ public class BattleSystem : MonoBehaviour
         CreatePartyEntities();
         CreateEnemyEntities();
         ShowBattleMenu();
+        DetermineBattleOrder();
     }
 
     IEnumerator BattleRoutine()
@@ -73,6 +74,7 @@ public class BattleSystem : MonoBehaviour
                         yield return StartCoroutine(AttackRoutine(i));
                         break;
                     case BattleEntity.BattleState.Running:
+                        yield return StartCoroutine(RunRoutine());
                         break;
                     default:
                         Debug.LogError("Invalid Battle State");
@@ -176,6 +178,23 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
+    public void SelectRunAction()
+    {
+        BattleEntity currentPlayerEntity = playerBattlers[currentPlayer];
+        currentPlayerEntity.State = BattleEntity.BattleState.Running;
+        battleMenu.SetActive(false);
+        currentPlayer++;
+
+        if (currentPlayer >= playerBattlers.Count)
+        {
+            StartCoroutine(BattleRoutine());
+        }
+        else
+        {
+            ShowBattleMenu();
+        }
+    }
+
     void SetEnemySelectionButtons()
     {
         foreach (GameObject button in enemySelectionButtons)
@@ -230,8 +249,10 @@ public class BattleSystem : MonoBehaviour
                 }
             }
         }
-        else
+
+        if (i < allBattlers.Count && !allBattlers[i].IsPlayer)
         {
+
             BattleEntity enemy = allBattlers[i];
             enemy.Target = GetRandomPartyMember();
             BattleEntity target = allBattlers[enemy.Target];
@@ -252,6 +273,27 @@ public class BattleSystem : MonoBehaviour
                     bottomText.text = "You lost the battle!";
                     SceneManager.LoadScene(OVERWORLD_SCENE_NAME);
                 }
+            }
+        }
+
+    }
+
+    IEnumerator RunRoutine()
+    {
+        if (currentState == BattleState.Battle)
+        {
+            if (UnityEngine.Random.Range(1, 101) >= 50)
+            {
+                currentState = BattleState.Run;
+                allBattlers.Clear();
+                bottomText.text = "You ran away!";
+                yield return new WaitForSeconds(TURN_DURATION);
+                SceneManager.LoadScene(OVERWORLD_SCENE_NAME);
+            }
+            else
+            {
+                bottomText.text = "You couldn't run away!";
+                yield return new WaitForSeconds(TURN_DURATION);
             }
         }
     }
@@ -290,6 +332,11 @@ public class BattleSystem : MonoBehaviour
         {
             partyManager.SaveHealth(i, playerBattlers[i].CurrentHealth);
         }
+    }
+
+    void DetermineBattleOrder()
+    {
+        allBattlers.Sort((a, b) => b.Speed.CompareTo(a.Speed));
     }
 }
 
