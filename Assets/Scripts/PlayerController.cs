@@ -74,6 +74,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void OnDisable()
+    {
+        playerControls.Disable();
+    }
+
     void CalculateStepsToEncounter()
     {
         stepsToEncounter = Random.Range(minStepsToEncounter, maxStepsToEncounter);
