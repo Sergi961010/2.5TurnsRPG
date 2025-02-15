@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BattleSystem : MonoBehaviour
 {
     private const string ACTION_MESSAGE = "'s action:";
     private const float TURN_DURATION = 0.5f;
+    private const string OVERWORLD_SCENE_NAME = "OverworldScene";
 
     [SerializeField]
     enum BattleState
@@ -195,6 +197,7 @@ public class BattleSystem : MonoBehaviour
         target.BattleVisual.PlayHitAnimation();
         target.UpdateUI();
         bottomText.text = string.Format("{0} dealt {1} damage to {2}.", player.Name, player.Strength, target.Name);
+        SaveHealth();
     }
 
     IEnumerator AttackRoutine(int i)
@@ -223,6 +226,7 @@ public class BattleSystem : MonoBehaviour
                 {
                     currentState = BattleState.Won;
                     bottomText.text = "You won the battle!";
+                    SceneManager.LoadScene(OVERWORLD_SCENE_NAME);
                 }
             }
         }
@@ -246,6 +250,7 @@ public class BattleSystem : MonoBehaviour
                 {
                     currentState = BattleState.Lost;
                     bottomText.text = "You lost the battle!";
+                    SceneManager.LoadScene(OVERWORLD_SCENE_NAME);
                 }
             }
         }
@@ -277,6 +282,14 @@ public class BattleSystem : MonoBehaviour
         }
 
         return availableEnemies[UnityEngine.Random.Range(0, availableEnemies.Count)];
+    }
+
+    void SaveHealth()
+    {
+        for (int i = 0; i < playerBattlers.Count; i++)
+        {
+            partyManager.SaveHealth(i, playerBattlers[i].CurrentHealth);
+        }
     }
 }
 
