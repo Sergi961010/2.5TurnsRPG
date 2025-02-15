@@ -66,7 +66,7 @@ public class BattleSystem : MonoBehaviour
 
         for (int i = 0; i < allBattlers.Count; i++)
         {
-            if (currentState == BattleState.Battle)
+            if (currentState == BattleState.Battle && allBattlers[i].CurrentHealth > 0)
             {
                 switch (allBattlers[i].State)
                 {
@@ -82,6 +82,8 @@ public class BattleSystem : MonoBehaviour
                 }
             }
         }
+
+        RemoveDeadBattlers();
 
         if (currentState == BattleState.Battle)
         {
@@ -195,6 +197,17 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
+    void RemoveDeadBattlers()
+    {
+        for (int i = 0; i < allBattlers.Count; i++)
+        {
+            if (allBattlers[i].CurrentHealth <= 0)
+            {
+                allBattlers.RemoveAt(i);
+            }
+        }
+    }
+
     void SetEnemySelectionButtons()
     {
         foreach (GameObject button in enemySelectionButtons)
@@ -224,7 +237,7 @@ public class BattleSystem : MonoBehaviour
         if (allBattlers[i].IsPlayer)
         {
             BattleEntity player = allBattlers[i];
-            if (!allBattlers[player.Target].IsPlayer || player.Target >= allBattlers.Count)
+            if (allBattlers[player.Target].CurrentHealth <= 0)
             {
                 player.Target = GetRandomEnemy();
             }
@@ -238,7 +251,6 @@ public class BattleSystem : MonoBehaviour
                 bottomText.text = string.Format("{0} has been defeated!", target.Name);
                 yield return new WaitForSeconds(TURN_DURATION);
 
-                allBattlers.Remove(target);
                 enemyBattlers.Remove(target);
 
                 if (enemyBattlers.Count <= 0)
@@ -264,7 +276,7 @@ public class BattleSystem : MonoBehaviour
             {
                 bottomText.text = string.Format("{0} has been defeated!", target.Name);
                 yield return new WaitForSeconds(TURN_DURATION);
-                allBattlers.Remove(target);
+
                 playerBattlers.Remove(target);
 
                 if (playerBattlers.Count <= 0)
