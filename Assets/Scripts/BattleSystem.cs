@@ -7,6 +7,7 @@ using UnityEngine;
 public class BattleSystem : MonoBehaviour
 {
     private const string ACTION_MESSAGE = "'s action:";
+    private const float TURN_DURATION = 0.5f;
 
     [SerializeField]
     enum BattleState
@@ -60,18 +61,21 @@ public class BattleSystem : MonoBehaviour
         currentState = BattleState.Battle;
         bottomPopupText.SetActive(true);
 
-        for (int i = 0; i < playerBattlers.Count; i++)
+        for (int i = 0; i < allBattlers.Count; i++)
         {
-            switch (allBattlers[i].State)
+            if (currentState == BattleState.Battle)
             {
-                case BattleEntity.BattleState.Attacking:
-                    yield return StartCoroutine(AttackRoutine(i));
-                    break;
-                case BattleEntity.BattleState.Running:
-                    break;
-                default:
-                    Debug.LogError("Invalid Battle State");
-                    break;
+                switch (allBattlers[i].State)
+                {
+                    case BattleEntity.BattleState.Attacking:
+                        yield return StartCoroutine(AttackRoutine(i));
+                        break;
+                    case BattleEntity.BattleState.Running:
+                        break;
+                    default:
+                        Debug.LogError("Invalid Battle State");
+                        break;
+                }
             }
         }
 
@@ -129,7 +133,7 @@ public class BattleSystem : MonoBehaviour
                 Speed = currentEnemies[i].Speed,
                 Strength = currentEnemies[i].Strength,
                 Level = currentEnemies[i].Level,
-                IsPlayer = true,
+                IsPlayer = false,
                 BattleVisual = SpawnVisual(currentEnemies[i], enemySpawnPoints[i])
             };
 
@@ -198,13 +202,20 @@ public class BattleSystem : MonoBehaviour
         if (allBattlers[i].IsPlayer)
         {
             BattleEntity player = allBattlers[i];
+            if (!allBattlers[player.Target].IsPlayer || player.Target >= allBattlers.Count)
+            {
+                player.Target = GetRandomEnemy();
+            }
             BattleEntity target = allBattlers[player.Target];
 
             AttackAction(allBattlers[i], allBattlers[allBattlers[i].Target]);
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(TURN_DURATION);
 
             if (target.CurrentHealth <= 0)
             {
+                bottomText.text = string.Format("{0} has been defeated!", target.Name);
+                yield return new WaitForSeconds(TURN_DURATION);
+
                 allBattlers.Remove(target);
                 enemyBattlers.Remove(target);
 
@@ -214,8 +225,58 @@ public class BattleSystem : MonoBehaviour
                     bottomText.text = "You won the battle!";
                 }
             }
-
         }
+        else
+        {
+            BattleEntity enemy = allBattlers[i];
+            enemy.Target = GetRandomPartyMember();
+            BattleEntity target = allBattlers[enemy.Target];
+
+            AttackAction(allBattlers[i], allBattlers[allBattlers[i].Target]);
+            yield return new WaitForSeconds(TURN_DURATION);
+
+            if (target.CurrentHealth <= 0)
+            {
+                bottomText.text = string.Format("{0} has been defeated!", target.Name);
+                yield return new WaitForSeconds(TURN_DURATION);
+                allBattlers.Remove(target);
+                playerBattlers.Remove(target);
+
+                if (playerBattlers.Count <= 0)
+                {
+                    currentState = BattleState.Lost;
+                    bottomText.text = "You lost the battle!";
+                }
+            }
+        }
+    }
+
+    int GetRandomPartyMember()
+    {
+        List<int> availableMembers = new();
+        for (int i = 0; i < allBattlers.Count; i++)
+        {
+            if (allBattlers[i].IsPlayer)
+            {
+                availableMembers.Add(i);
+            }
+        }
+
+        return availableMembers[UnityEngine.Random.Range(0, availableMembers.Count)];
+    }
+
+    int GetRandomEnemy()
+    {
+        List<int> availableEnemies = new();
+        for (int i = 0; i < allBattlers.Count; i++)
+        {
+            if (!allBattlers[i].IsPlayer)
+            {
+                availableEnemies.Add(i);
+            }
+        }
+
+        return availableEnemies[UnityEngine.Random.Range(0, availableEnemies.Count)];
     }
 }
 
