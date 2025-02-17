@@ -6,6 +6,8 @@ public class CharacterManager : MonoBehaviour
 {
     const string NpcJoinableTag = "NPCJoinable";
     
+    [SerializeField] JoinPopup _joinPopup;
+    
     bool _inFrontOfPartyMember;
     GameObject _joinableCharacter;
     PlayerControls _playerControls;
@@ -62,6 +64,6 @@ public class CharacterManager : MonoBehaviour
     {
         FindFirstObjectByType<PartyManager>().AddMemberToPartyByName(partyMemberInfo.Name);
         _joinableCharacter.GetComponent<JoinableCharacter>().CheckIfJoined();
-        
+        _joinPopup.Show(partyMemberInfo.Name);
     }
 }
