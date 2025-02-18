@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3d67c4f650e8a2a48a4fd806b49f621c, type: 3}
-  m_Name: Clare
+  m_Name: Claire
   m_EditorClassIdentifier: 
-  Name: Clare
+  Name: Claire
   StartingLevel: 1
   BaseHealth: 7
   BaseStrength: 6
   BaseSpeed: 8
-  BattleVisualPrefab: {fileID: 0}
-  OverworldVisualPrefab: {fileID: 0}
+  BattleVisualPrefab: {fileID: 8431248982235321927, guid: df69d4d1f07886a4ba01a854c3932e50, type: 3}
+  OverworldVisualPrefab: {fileID: 7160732539830511898, guid: 8cf4168282b61d94997e8e65bf206318, type: 3}
