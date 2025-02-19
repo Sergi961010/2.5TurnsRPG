@@ -6224,21 +6224,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 6, y: 1, z: 9.11}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!4 &516975342 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4548458439480468045, guid: d30fbcb6952d51143906ba50e35d0719, type: 3}
-  m_PrefabInstance: {fileID: 56543232839751483}
-  m_PrefabAsset: {fileID: 0}
---- !u!212 &516975343 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 6021693471473258143, guid: d30fbcb6952d51143906ba50e35d0719, type: 3}
-  m_PrefabInstance: {fileID: 56543232839751483}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &516975344 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 2080578251229127993, guid: d30fbcb6952d51143906ba50e35d0719, type: 3}
-  m_PrefabInstance: {fileID: 56543232839751483}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &518100844
 GameObject:
   m_ObjectHideFlags: 0
@@ -8528,8 +8513,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a03164a481ab1e243b723b44d674de7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 516975344}
-  spriteRenderer: {fileID: 516975343}
+  animator: {fileID: 0}
+  spriteRenderer: {fileID: 0}
   speed: 3
   grassLayer:
     serializedVersion: 2
@@ -8548,8 +8533,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 516975342}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &1232793098
@@ -10631,63 +10615,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 254609356670959061, guid: 26cf35fe9046cfd45994dd443520580e, type: 3}
   m_PrefabInstance: {fileID: 2146861821}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &56543232839751483
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1232793097}
-    m_Modifications:
-    - target: {fileID: 1669592626944167621, guid: d30fbcb6952d51143906ba50e35d0719, type: 3}
-      propertyPath: m_Name
-      value: JohnOverworld
-      objectReference: {fileID: 0}
-    - target: {fileID: 4548458439480468045, guid: d30fbcb6952d51143906ba50e35d0719, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4548458439480468045, guid: d30fbcb6952d51143906ba50e35d0719, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4548458439480468045, guid: d30fbcb6952d51143906ba50e35d0719, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4548458439480468045, guid: d30fbcb6952d51143906ba50e35d0719, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4548458439480468045, guid: d30fbcb6952d51143906ba50e35d0719, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4548458439480468045, guid: d30fbcb6952d51143906ba50e35d0719, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4548458439480468045, guid: d30fbcb6952d51143906ba50e35d0719, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4548458439480468045, guid: d30fbcb6952d51143906ba50e35d0719, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4548458439480468045, guid: d30fbcb6952d51143906ba50e35d0719, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4548458439480468045, guid: d30fbcb6952d51143906ba50e35d0719, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: d30fbcb6952d51143906ba50e35d0719, type: 3}
 --- !u!1001 &659196164553175808
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10796,6 +10723,10 @@ PrefabInstance:
     - target: {fileID: 7160732539830511898, guid: 8cf4168282b61d94997e8e65bf206318, type: 3}
       propertyPath: m_Name
       value: ClaireOverworld
+      objectReference: {fileID: 0}
+    - target: {fileID: 8007768927546246813, guid: 8cf4168282b61d94997e8e65bf206318, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

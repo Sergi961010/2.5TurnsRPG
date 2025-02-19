@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ public class CharacterManager : MonoBehaviour
     bool _inFrontOfPartyMember;
     GameObject _joinableCharacter;
     PlayerControls _playerControls;
+    List<GameObject> _overworldCharacters = new();
 
     void Awake()
     {
@@ -20,6 +22,7 @@ public class CharacterManager : MonoBehaviour
     void Start()
     {
         _playerControls.Player.Interact.performed += _ => Interact();
+        SpawnOverworldMembers();
     }
 
     void OnEnable()
@@ -65,5 +68,39 @@ public class CharacterManager : MonoBehaviour
         FindFirstObjectByType<PartyManager>().AddMemberToPartyByName(partyMemberInfo.Name);
         _joinableCharacter.GetComponent<JoinableCharacter>().CheckIfJoined();
         _joinPopup.Show(partyMemberInfo.Name);
+        SpawnOverworldMembers();
+    }
+
+    void SpawnOverworldMembers()
+    {
+        foreach (GameObject character in _overworldCharacters)
+        {
+            Destroy(character);
+        }
+        _overworldCharacters.Clear();
+        
+        List<PartyMember> currentParty = FindFirstObjectByType<PartyManager>().GetCurrentParty();
+
+        for (int i = 0; i < currentParty.Count; i++)
+        {
+            if (i == 0)
+            {
+                GameObject playerCharacter = gameObject;
+                GameObject playerVisuals = Instantiate(currentParty[i].OverworldVisualPrefab, playerCharacter.transform.position, Quaternion.identity);
+                
+                playerVisuals.transform.SetParent(playerCharacter.transform);
+                playerCharacter.GetComponent<PlayerController>().SetOverworldVisuals(playerVisuals.GetComponent<Animator>(), playerVisuals.GetComponent<SpriteRenderer>());
+                playerVisuals.GetComponent<MemberFollowAI>().enabled = false;
+                _overworldCharacters.Add(playerVisuals);
+            }
+            else
+            {
+                Vector3 positionToSpawn = transform.position;
+                positionToSpawn.x -= 1;
+                GameObject follower = Instantiate(currentParty[i].OverworldVisualPrefab, positionToSpawn, Quaternion.identity);
+                follower.GetComponent<MemberFollowAI>().FollowDistance = i;
+                _overworldCharacters.Add(follower);
+            }
+        }
     }
 }

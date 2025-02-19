@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4548458439480468045}
   - component: {fileID: 6021693471473258143}
   - component: {fileID: 2080578251229127993}
+  - component: {fileID: 8731084814615853170}
   m_Layer: 7
   m_Name: JohnOverworld
   m_TagString: Untagged
@@ -111,6 +112,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8731084814615853170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1669592626944167621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a54caf40273f1b449992b6907496a322, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _followTarget: {fileID: 0}
+  _speed: 3
 --- !u!1 &4535125513998448343
 GameObject:
   m_ObjectHideFlags: 0
