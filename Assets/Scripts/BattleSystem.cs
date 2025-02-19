@@ -315,7 +315,7 @@ public class BattleSystem : MonoBehaviour
         List<int> availableMembers = new();
         for (int i = 0; i < allBattlers.Count; i++)
         {
-            if (allBattlers[i].IsPlayer)
+            if (allBattlers[i].IsPlayer && allBattlers[i].CurrentHealth > 0)
             {
                 availableMembers.Add(i);
             }
@@ -329,7 +329,7 @@ public class BattleSystem : MonoBehaviour
         List<int> availableEnemies = new();
         for (int i = 0; i < allBattlers.Count; i++)
         {
-            if (!allBattlers[i].IsPlayer)
+            if (!allBattlers[i].IsPlayer && allBattlers[i].CurrentHealth > 0)
             {
                 availableEnemies.Add(i);
             }
